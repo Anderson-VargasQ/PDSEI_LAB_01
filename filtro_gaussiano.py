@@ -29,18 +29,18 @@ ind_flanco_bajada = k +np.argmin((filtro_gaussiano[k:]-.5)**2)  # Indice de la m
 ind_flanco_subida = np.argmin((filtro_gaussiano-.5)**2)    # Indice de la mitad del flanco de subida
 
 FWHM_calculado = gt[ind_flanco_subida] - gt[ind_flanco_bajada]   # Duracion de FWHM en ms
-FWHM_calculado = round(FWHM_calculado, 5)
+FWHM_calculado = round(FWHM_calculado, 4)
 
-'''GRAFICACIÓN '''
+'''GRAFICACIÓN DE FUNCIÓN GAUSSIANA'''
 
 plt.subplots(1,2, figsize=(15,4))
 
 plt.subplot(121)
-plt.plot(gt,filtro_gaussiano, label="Filtro Gaussiano") #Grafica de la funcion gaussiana
+plt.plot(gt,filtro_gaussiano, label="Función Gaussiana") #Grafica de la funcion gaussiana
 plt.plot([gt[ind_flanco_subida], gt[ind_flanco_bajada]],
          [filtro_gaussiano[ind_flanco_subida], filtro_gaussiano[ind_flanco_bajada]],
          label= "FWHM")   #Grafico de la linea FWHM
-plt.title(f"Filtro G. con FWHM teorico de {FWHM}-ms. logrado {FWHM_calculado}-ms")
+plt.title(f"Func. Gauss. con FWHM teorico de {FWHM}-ms. logrado {FWHM_calculado}-ms")
 plt.xlabel("Tiempo (ms)")
 plt.ylabel("Ganancia")
 plt.grid()
@@ -56,6 +56,9 @@ plt.xlabel("Tiempo (ms)")
 plt.ylabel("Ganancia")
 plt.grid()
 plt.legend()
+
+
+'''GRAFICACIÓN DE SEÑAL FILTRADA'''
 
 fltrd_gauss_sig = np.zeros_like(new_signal)
 
@@ -77,6 +80,7 @@ plt.subplot(132)
 plt.plot(time,fltrd_gauss_sig,"r",label="Señal filtrada")
 plt.title(f"Filtro Gaussiano con FWHM={FWHM_calculado}-ms")
 plt.xlabel("Tiempo (s)")
+plt.ylabel("Amplitud")
 plt.grid()
 plt.legend()
 
@@ -85,6 +89,7 @@ plt.plot(time,new_signal,label="Señal ruidosa")
 plt.plot(time,fltrd_gauss_sig,"r",label="Señal filtrada")
 plt.title(f"Efecto de borde con filtro Gaussiano")
 plt.xlabel("Tiempo (s)")
+plt.ylabel("Amplitud")
 plt.axis([1.500, 1.515, -0.0015, 0.001])
 plt.grid()
 plt.legend()
